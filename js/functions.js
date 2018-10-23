@@ -150,7 +150,7 @@ var init_settings = function() {
     }
 
     if(!window.settings.backend_url) {
-        window.settings.backend_url = "http://localhost:5001/api/v1"
+        window.settings.backend_url = "https://caseservice.azurewebsites.net/api/v1"
     }
 
     $('#backend_api_url').val(window.settings.backend_url);
