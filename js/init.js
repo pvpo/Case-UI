@@ -53,6 +53,8 @@ $(document).ready(function() {
     var myChart = new Chart(ctx, {
         type: 'line',
         data: {
+            // labels: ["00 AM", "01 AM", "02 AM", "03 AM", "04 AM", "05 AM", "06 AM", "07 AM", "08 AM", "09 AM", "10 AM", "11 AM", "12 PM", "01 PM", "02 PM", "03 PM", "04 PM", "05 PM", "06 PM", "07 PM", "08 PM", "09 PM", "10 PM", "11 PM"],
+
             labels: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
             datasets: [{
                 data: [15339, 21345, 18483, 24003, 23489, 24092, 12034],
