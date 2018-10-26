@@ -382,10 +382,6 @@
                                             <input type="text" class="form-control" id="BlockId-Prot" placeholder="BlockId">
                                     </div>
                                     <div class="col-sm-3">
-                                        <label for="ProtocolNumber-Prot">ProtocolNumber</label>
-                                        <input type="text" class="form-control" id="ProtocolNumber-Prot" placeholder="ProtocolNumber">
-                                    </div>
-                                    <div class="col-sm-3">
                                         <div class="dropdown tissue_type_cnt">
                                             <label>Tissue Type</label>
                                             <br>
@@ -400,14 +396,6 @@
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-sm-3">
-                                        <label for="ProtocolName-Prot">ProtocolName</label>
-                                        <input type="text" class="form-control" id="ProtocolName-Prot" placeholder="ProtocolName">
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label for="ProtocolDescription-Prot">ProtocolDescription</label>
-                                        <input type="text" class="form-control" id="ProtocolDescription-Prot" placeholder="ProtocolDescription">
-                                    </div>
-                                    <div class="col-sm-3">
                                         <button id="add_specimen" type="button" class="btn btn-primary px-4" style="margin-top: 28px;">Add</button>
                                     </div>
                                 </div>
@@ -420,10 +408,8 @@
                                         <thead>
                                         <tr>
                                             <th>BlockId</th>
-                                            <th>ProtocolNumber</th>
-                                            <th>ProtocolName</th>
-                                            <th>ProtocolDescription</th>
                                             <th>Tissue Type</th>
+                                            <th>Add Slides</th>
                                             <th>Delete</th>
                                         </tr>
                                         </thead>
@@ -519,11 +505,9 @@
                                             <th class="system">Specimen System Id</th>
                                             <th>Specimen Id</th>
                                             <th>BlockId</th>
-                                            <th>ProtocolNumber</th>
-                                            <th>ProtocolName</th>
-                                            <th>ProtocolDescription</th>
                                             <th>Tissue Type</th>
                                             <th>Created On</th>
+                                            <th>View Slides</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -618,6 +602,10 @@ SELECT SQL_NO_CACHE DISTINCT
                                     <label for="case_types">Case Types</label>
                                     <input readonly type="text" class="form-control" id="case_types">
                                 </div>
+                                <div class="col-sm-6">
+                                    <label for="protocol_types">Protocol Types</label>
+                                    <input readonly type="text" class="form-control" id="protocol_types">
+                                </div>
                             </div>
                             <button id="save_settings" type="button" class="btn btn-primary px-4 float-right">Save</button>
                         </div>
@@ -625,6 +613,95 @@ SELECT SQL_NO_CACHE DISTINCT
                 </div>
             </main>
         </div>
+        <div id="add_slides_modal" class="modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Add Slides</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                            <div class="col-md-10 mx-auto">
+                                <div class="row">
+                                    <div class="col-sm-6 protocol_names_cnt">
+                                        <label for="protocol_name">Protocol Name</label>
+                                        <div class="dropdown">
+                                            <button class="btn btn-secondary dropdown-toggle" type="button" id="protocol_name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                Protocol Name
+                                            </button>
+                                            <div class="dropdown-menu protocols_list" aria-labelledby="case_type">
+                                            </div>
+                                            <div class="invalid-feedback protocols-invalid-feedback">You need to select valid Protocol</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label for="protocol_description">Protocol Description</label>
+                                        <input type="text" class="form-control" id="protocol_description" placeholder="Protocol Description">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-3">
+                                        <button id="add_slide" type="button" class="btn btn-primary px-4" style="margin-top: 28px;">Add</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="table-responsive">
+                                <table id="slides_table" class="table table-striped table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>Protocol Name</th>
+                                            <th>Protocol Description</th>
+                                            <th>Delete</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="save_slides" type="button" class="btn btn-primary">Save changes</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="view_slides_modal" class="modal bd-example-modal-lg" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">View Slides</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="table-responsive">
+                            <table id="view_slides_table" class="table table-striped table-sm">
+                                <thead>
+                                    <tr>
+                                        <th class="system">Slide System Id</th>
+                                        <th>Slide Id</th>
+                                        <th>Protocol Name</th>
+                                        <th>Protocol Description</th>
+                                        <th>Created On</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="close_view_slides" type="button" class="btn btn-primary">OK</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
     </body>
 </html>

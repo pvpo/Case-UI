@@ -128,7 +128,6 @@ var view_case = function(case_id) {
                 $('#patient_id').text(data.Patient.PatientId);
                 $('#patient_gender_view').text(data.Patient.Gender);
                 $('#patient_createdon').text(data.Patient.CreatedOn);
-            
             }
 
             if(data.Requestor != null) {
@@ -138,7 +137,6 @@ var view_case = function(case_id) {
                 $('#requestor_email').text(data.Requestor.Email);
                 $('#requestor_mobile').text(data.Patient.Mobile);
                 $('#requestor_createdon').text(data.Patient.CreatedOn);
-
             }
 
             var tbody = "";
@@ -151,22 +149,26 @@ var view_case = function(case_id) {
 
             for(var i in data.Specimens) {
                 var Specimen = data.Specimens[i];
+
+                var viewSlides = "<td></td>";
+                if(Specimen.Slides) {
+                    viewSlides =  "<td><a class=\"view_slides\" href=\"#\" data-slides=\"" + btoa(JSON.stringify(Specimen.Slides)) + "\"><i data-feather=\"eye\"></i></a></td>";
+                }
+
                 casesCount++;
                 tbody +=
-                "<tr>" +
-                    "<td " + display + " class=\"specimenSystemId system\">" + Specimen.Id + "</td>" +
-                    "<td class=\"specimenId\">" + Specimen.SpecimenId + "</td>" +
-                    "<td class=\"blockId\">" + Specimen.BlockId + "</td>" +
-                    "<td class=\"protocolNumber\">" + Specimen.ProtocolNumber + "</td>" +
-                    "<td class=\"protocolName\">" + Specimen.ProtocolName + "</td>" +
-                    "<td class=\"protocolDescription\">" + Specimen.ProtocolDescription + "</td>" +
-                    "<td class=\"tissueType\">" + Specimen.TissueType + "</td>" +
-                    "<td class=\"createdOn\">" + Specimen.CreatedOn + "</td>" +
-                "</tr>";
+                    "<tr>" +
+                        "<td " + display + " class=\"specimenSystemId system\">" + Specimen.Id + "</td>" +
+                        "<td class=\"specimenId\">" + Specimen.SpecimenId + "</td>" +
+                        "<td class=\"blockId\">" + Specimen.BlockId + "</td>" +
+                        "<td class=\"tissueType\">" + Specimen.TissueType + "</td>" +
+                        "<td class=\"createdOn\">" + Specimen.CreatedOn + "</td>" +
+                        viewSlides +
+                    "</tr>";
             }
 
             $('#specimen_view_table tbody').html(tbody);
-
+            feather.replace();
             location.hash = 'view-case';
         },
         error: function (jqXHR, status) {
@@ -183,7 +185,8 @@ var init_settings = function() {
         show_system_fields: (localStorage.getItem('show_system_fields') === 'false' ? false : true),
         case_types: [],
         tissue_types: [],
-        gender: []
+        gender: [],
+        protocol_names: []
     }
 
     if(!window.settings.backend_url) {
@@ -236,6 +239,22 @@ var init_settings = function() {
         $('.gender').html(gender_type_list);
     });
 
+    $.get(window.settings.backend_url + "/Slide/protocols", function(data){
+        window.settings.protocol_names = data;
+        $('#protocol_types').val(JSON.stringify(data));
+
+        var protocol_names_list = "";
+        for(var i in data) {
+            var ct = data[i];
+            protocol_names_list += '<a class="dropdown-item" href="#">' + ct + '</a>'
+        }
+
+        $('.protocols_list').html(protocol_names_list);
+    });
+
+
+
+    
     $('#backend_api_url').val(window.settings.backend_url);
 
 }
