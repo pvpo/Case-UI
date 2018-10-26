@@ -3,6 +3,7 @@
 ** main container is invoked multiple times.
 */
 var list_cases_done = false; 
+var initializing_dashboard = false;
 
 /*
 ** Changes the the <main> visible html element.
@@ -22,12 +23,144 @@ var change_main = function(main_id) {
                 window.editor.refresh();
                 list_cases_done = false;
                 $(main_id).show();
-            } else {
+            } else if(main_id === '#dashboard') {
+                if(!initializing_dashboard) {
+                    show_dashboard();
+                    list_cases_done = false;
+                }
+            }  else {
                 list_cases_done = false;
                 $(main_id).show();
             }
         });
     }
+}
+
+var show_dashboard = function() {
+    initializing_dashboard = true;
+    $('main').hide(function() {
+        $('#loading').show();
+    });
+
+    $.get(window.settings.backend_url + "/Stats/cases/closed/daily", function(data) {
+        Highcharts.chart('container', {
+            chart: {
+                zoomType: 'x'
+            },
+            title: {
+                text: 'Cases Closed Today'
+            },
+            subtitle: {
+                text: document.ontouchstart === undefined ?
+                        'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in'
+            },
+            xAxis: {
+                type: 'datetime'
+            },
+            yAxis: {
+                title: {
+                    text: 'Case count'
+                }
+            },
+            legend: {
+                enabled: false
+            },
+            plotOptions: {
+                area: {
+                    fillColor: {
+                        linearGradient: {
+                            x1: 0,
+                            y1: 0,
+                            x2: 0,
+                            y2: 1
+                        },
+                        stops: [
+                            [0, Highcharts.getOptions().colors[0]],
+                            [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                        ]
+                    },
+                    marker: {
+                        radius: 2
+                    },
+                    lineWidth: 1,
+                    states: {
+                        hover: {
+                            lineWidth: 1
+                        }
+                    },
+                    threshold: null
+                }
+            },
+
+            series: [{
+                type: 'area',
+                name: 'Closed Cases',
+                data: data
+            }]
+        });
+        $('main').hide(function() {
+            $('#dashboard').show();
+        });
+    });
+
+    $.get(window.settings.backend_url + "/Stats/db/stats", function(data) {
+        var parsed_data = [];
+
+        for(var i in data) {
+            var dat = data[i];
+
+            parsed_data.push([dat[0], parseInt(dat[1])]);
+        }
+
+        console.warn(data);
+        console.warn(parsed_data);
+        Highcharts.chart('container1', {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'DB Entries count'
+            },
+            xAxis: {
+                type: 'category',
+                labels: {
+                    rotation: -45,
+                    style: {
+                        fontSize: '13px',
+                        fontFamily: 'Verdana, sans-serif'
+                    }
+                }
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Entries'
+                }
+            },
+            legend: {
+                enabled: false
+            },
+            tooltip: {
+                pointFormat: '<b>{point.y} entries</b>'
+            },
+            series: [{
+                name: 'DB Entries count',
+                data: parsed_data,
+                dataLabels: {
+                    enabled: true,
+                    rotation: -90,
+                    color: '#FFFFFF',
+                    align: 'right',
+                    format: '{point.y:.1f}', // one decimal
+                    y: 10, // 10 pixels down from the top
+                    style: {
+                        fontSize: '13px',
+                        fontFamily: 'Verdana, sans-serif'
+                    }
+                }
+            }]
+        });
+    });
 }
 
 var list_cases = function() {
