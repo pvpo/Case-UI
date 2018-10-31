@@ -95,10 +95,22 @@ body {
         height: 135px !important;
     }
 
+    .navbar-brand {
+      height: 80px;
+    }
+
     .navbar div {
       width:100%;
       padding: 0px 10px 0px 0px;
       height: 40px; /*when closed*/
+    }
+
+    .navbar div ul {
+      height: 100%;
+    }
+    
+    .navbar div ul li:not(.mobile-menu) {
+      /* display: none; */
     }
 
     .hide-mobile {
@@ -107,6 +119,15 @@ body {
 
     .show-mobile {
       display: block;
+    }
+
+    body {
+      overflow: hidden;
+    }
+
+    .container-fluid {
+      display: block;
+      overflow-y: scroll;
     }
 }
   

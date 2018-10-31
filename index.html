@@ -14,11 +14,10 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
         <script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
-        <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+        
         <script src="https://code.highcharts.com/highcharts.js"></script>
         <script src="https://code.highcharts.com/modules/exporting.js"></script>
         <script src="https://code.highcharts.com/modules/export-data.js"></script>
-
 
         <script src="js/lib/codemirror.js"></script>
         <script src="js/lib/matchbrackets.js"></script>
@@ -26,9 +25,25 @@
         <script src="js/lib/show-hint.js"></script>
         <script src="js/lib/sql-hint.js"></script>
         <script src="js/lib/autorefresh.js"></script>
-        <script src="js/init.js"></script>
+
+        <!-- <script src="js/init.js"></script>
         <script src="js/functions.js"></script>
-        <script src="js/events.js"></script>
+        <script src="js/events.js"></script> -->
+
+        <script src="js/utils/AJAXUtils.js"></script>
+        <script src="js/utils/ChartUtils.js"></script>
+        <script src="js/utils/ModuleUtils.js"></script>
+        <script src="js/utils/DropDownUtils.js"></script>
+
+        <script src="js/modules/dashboard.js"></script>
+        <script src="js/modules/settings.js"></script>
+        <script src="js/modules/list_cases.js"></script>
+        <script src="js/modules/view_case.js"></script>
+        <script src="js/modules/list_slides.js"></script>
+        <script src="js/modules/create_case.js"></script>
+        <script src="js/modules/add_slides.js"></script>
+
+        <script src="js/main.js"></script>
 
         <title>Case Service</title>
     </head>
@@ -39,8 +54,8 @@
             <input class="hide-mobile form-control form-control-dark" type="text" placeholder="Search" aria-label="Search">
             <ul class="navbar-nav px-3">
 
-                <li class="show-mobile nav-item text-nowrap">
-                    <a id="responsive-menu" class="nav-link" href="#">
+                <li class="show-mobile nav-item text-nowrap mobile-menu">
+                    <a id="responsive-menu" class="nav-link" href="#menu">
                             <span data-feather="menu"></span>
                             Menu <span class="sr-only"></span>
                     </a>
@@ -193,7 +208,7 @@
                                         <h1>Create Case</h1>
                                     </div>
                                     <div class="col-sm-6">
-                                        <div class="dropdown case_type_cnt">
+                                        <div class="dropdown case_type_cnt" data-default="Case Type">
                                             <button class="btn btn-secondary dropdown-toggle" type="button" id="case_type" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                 Case Type
                                             </button>
@@ -218,7 +233,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <div class="dropdown gender_type_cnt col-sm-6">
+                                    <div class="dropdown gender_type_cnt col-sm-6" data-default="Gender">
                                         <button class="btn btn-secondary dropdown-toggle" type="button" id="gender" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             Gender
                                         </button>
@@ -261,7 +276,7 @@
                                             <input type="text" class="form-control" id="BlockId-Prot" placeholder="BlockId">
                                     </div>
                                     <div class="col-sm-3">
-                                        <div class="dropdown tissue_type_cnt">
+                                        <div class="dropdown tissue_type_cnt" data-default="Tissue Type">
                                             <label>Tissue Type</label>
                                             <br>
                                             <button class="btn btn-secondary dropdown-toggle" type="button" id="tissue_type" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -504,7 +519,7 @@ SELECT SQL_NO_CACHE DISTINCT
                     <div class="modal-body">
                             <div class="col-md-10 mx-auto">
                                 <div class="row">
-                                    <div class="col-sm-6 protocol_names_cnt">
+                                    <div class="col-sm-6 protocol_names_cnt" data-default="Protocol Name">
                                         <label for="protocol_name">Protocol Name</label>
                                         <div class="dropdown">
                                             <button class="btn btn-secondary dropdown-toggle" type="button" id="protocol_name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
