@@ -34,7 +34,7 @@ $(document).ready(function() {
     $(window).on('hashchange', function(e) {
         console.log("HashChanged !")
 
-        if(location.hash = "#menu") {
+        if(location.hash == "#menu") {
             activation_in_progress = true;
             location.hash = current_hash;
             activation_in_progress = false;
